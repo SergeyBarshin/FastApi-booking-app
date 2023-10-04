@@ -37,4 +37,11 @@ class UserIsNotPresent(BookingException):
     status_code=status.HTTP_401_UNAUTHORIZED
     detail=""
 
-    
+
+class RoomCanNotBeBooked(BookingException):
+    status_code=status.HTTP_409_CONFLICT
+    detail='Не осталось свободных номеров'
+
+class BookNotFound(BookingException):
+    status_code=status.HTTP_404_NOT_FOUND
+    detail='Бронирование не найдено'

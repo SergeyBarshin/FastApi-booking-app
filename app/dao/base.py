@@ -1,5 +1,5 @@
 from app.database import async_session_maker
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, delete
 
 class BaseDAO:
     model = None
@@ -27,3 +27,10 @@ class BaseDAO:
             query = insert(self.model).values(**data)
             await session.execute(query)
             await session.commit()
+
+    async def delete_by_id(self, id):
+        async with async_session_maker() as session:
+            query = delete(self.model).where(self.model.id == id)
+            await session.execute(query)
+            await session.commit()
+             

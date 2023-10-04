@@ -1,48 +1,36 @@
 from fastapi import FastAPI, Query
-from typing import Optional
-from datetime import date
-from pydantic import BaseModel
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.bookings.router import router as router_bookings
 from app.users.router import router as router_users
+from app.hotels.router import router as route_hotels
+from app.images.router import router as router_images
+
+from redis import asyncio as aioredis
+
 
 app = FastAPI()
 
 app.include_router(router_users)
 app.include_router(router_bookings)
+app.include_router(route_hotels)
+app.include_router(router_images)
 
-class SHotel(BaseModel):
-    address: str
-    name: str
-    stars: int
+origins = [
+    "http://localhost:3000"
+]
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
+    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"],
+)
 
-@app.get("/hotels")
-def get_hotels(
-    location: str,
-    date_from: date,
-    date_to: date,
-    stars: Optional[int] = Query(None, ge=1, le=5),
-    has_spa: Optional[bool] = None
-) -> list[SHotel]:
-
-    hotels = [ 
-        {
-            "address": "ул. Гагарина, 1, Алтай",
-            "name": "Super Hotel",
-            "stars": 5,
-        },
-    ]
-
-    return hotels
-
-
-class SBooking(BaseModel):
-    room_id: int
-    date_from: date
-    date_to: date
-
-
-@app.post("/booking")
-def add_booking(booking: SBooking):
-    pass
+@app.on_event("startup")
+async def startup():
+    redis = aioredis.from_url("redis://localhost:6379", encoding="utf8", decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
