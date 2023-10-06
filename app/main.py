@@ -10,6 +10,10 @@ from app.images.router import router as router_images
 
 from redis import asyncio as aioredis
 
+from sqladmin import Admin, ModelView
+from app.admin.auth import authentication_backend
+from app.database import engine
+from app.admin.views import UserAdmin, BookingsAdmin
 
 app = FastAPI()
 
@@ -34,3 +38,10 @@ app.add_middleware(
 async def startup():
     redis = aioredis.from_url("redis://localhost:6379", encoding="utf8", decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+
+
+admin = Admin(app, engine, authentication_backend=authentication_backend)
+
+
+admin.add_view(UserAdmin)
+admin.add_view(BookingsAdmin)
