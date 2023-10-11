@@ -10,5 +10,9 @@
   {
     "email": "user@example.com",
     "hashed_password": "$2b$12$9jwuZvMWvGBxQ54RD7jlj.rWdpuGAP2RvEbD8Ek6jgpb3cp48YTZ"
+  },
+  {
+    "email": "artem@example.com",
+    "hashed_password": "$2b$12$SWAOSDak7tjnvIcj1TAUvUX6K4xv/zUvap8Y2oSCtqvv4f/XCB2Bi"
   }
 ]

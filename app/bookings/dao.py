@@ -7,7 +7,7 @@ from sqlalchemy import select, insert, and_, or_, cte, func
 class BookingDAO(BaseDAO):
     model = Bookings
 
-    async def add(self,user, room_id, date_from, date_to):
+    async def add(self, user, room_id, date_from, date_to):
         async with async_session_maker() as session:
             booked_rooms = select(Bookings).where(
                 and_(
@@ -33,9 +33,9 @@ class BookingDAO(BaseDAO):
                                 )
 
             rooms_left = await session.execute(get_rooms_left)
-            rooms_left: int = rooms_left.scalar()
+            rooms_left: int = len(rooms_left.mappings().all())
 
-            if rooms_left > 0:
+            if  rooms_left > 0:
                 get_price = select(Rooms.price).filter_by(id = room_id)
                 price = await session.execute(get_price)
                 price: int = price.scalar()

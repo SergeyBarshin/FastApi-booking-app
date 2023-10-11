@@ -9,15 +9,15 @@
   {
     "room_id": 2,
     "user_id": 1,
-    "date_from": "2023-04-91",
+    "date_from": "2023-04-11",
     "date_to": "2023-04-19",
     "price": 4300
   },
   {
-    "room id": 1,
-    "user id": 2,
+    "room_id": 1,
+    "user_id": 2,
     "date_from": "2023-06-05",
-    "date to": "2023-06-25",
+    "date_to": "2023-06-25",
     "price": 24500
   }
 ]
