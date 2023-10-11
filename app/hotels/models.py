@@ -1,5 +1,7 @@
+from sqlalchemy import JSON, Column, ForeignKey, Integer, String
+
 from app.database import Base
-from sqlalchemy import Column, JSON, Integer, String, ForeignKey
+
 
 class Hotels(Base):
     __tablename__ = "hotels"

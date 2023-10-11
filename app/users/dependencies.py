@@ -1,9 +1,13 @@
-from fastapi import Request, Depends
-from jose import jwt, JWTError
-from app.config import settings
 from datetime import datetime
+
+from fastapi import Depends, Request
+from jose import JWTError, jwt
+
+from app.config import settings
+from app.exсeptions import (IncorrectTokenFormatExeption, TokenAbsentException,
+                            TokenExpiredException, UserIsNotPresent)
 from app.users.dao import UserDao
-from app.exсeptions import TokenExpiredException, TokenAbsentException, IncorrectTokenFormatExeption, UserIsNotPresent
+
 
 def get_token(request: Request):
     tocken = request.cookies.get("booking_access_tocken")

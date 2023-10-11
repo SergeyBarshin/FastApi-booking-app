@@ -1,6 +1,9 @@
-import pytest
-from app.bookings.dao import BookingDAO
 from datetime import datetime
+
+import pytest
+
+from app.bookings.dao import BookingDAO
+
 
 async def test_add_and_get_bookings():
     booking_dao = BookingDAO()

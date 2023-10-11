@@ -1,19 +1,17 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
-from fastapi.middleware.cors import CORSMiddleware
+from redis import asyncio as aioredis
+from sqladmin import Admin
 
+from app.admin.auth import authentication_backend
+from app.admin.views import BookingsAdmin, UserAdmin
 from app.bookings.router import router as router_bookings
-from app.users.router import router as router_users
+from app.database import engine
 from app.hotels.router import router as route_hotels
 from app.images.router import router as router_images
-
-from redis import asyncio as aioredis
-
-from sqladmin import Admin, ModelView
-from app.admin.auth import authentication_backend
-from app.database import engine
-from app.admin.views import UserAdmin, BookingsAdmin
+from app.users.router import router as router_users
 
 app = FastAPI()
 
@@ -31,12 +29,21 @@ app.add_middleware(
     allow_origins=origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS", "DELETE", "PATCH", "PUT"],
-    allow_headers=["Content-Type", "Set-Cookie", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin", "Authorization"],
+    allow_headers=[
+        "Content-Type", "Set-Cookie",
+        "Access-Control-Allow-Headers",
+        "Access-Control-Allow-Origin",
+        "Authorization"
+    ],
 )
+
 
 @app.on_event("startup")
 async def startup():
-    redis = aioredis.from_url("redis://localhost:6379", encoding="utf8", decode_responses=True)
+    redis = aioredis.from_url(
+        "redis://localhost:6379",
+        encoding="utf8",
+        decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
 

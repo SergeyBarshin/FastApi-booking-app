@@ -1,6 +1,8 @@
 from typing import Literal
+
 from pydantic import root_validator
 from pydantic_settings import BaseSettings
+
 
 class Settings(BaseSettings):
     MODE: Literal['DEV','TEST','PROD']

@@ -12,3 +12,7 @@ _alembic_ миграции
 _redis_
 
 - команда для установки библиотеки `pip install "fastapi-cache2[redis]"`
+
+_Сортировака импортов_
+
+- isort app/main.py

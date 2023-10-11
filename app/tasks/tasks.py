@@ -1,6 +1,9 @@
-from app.tasks.celery import celery
-from PIL import Image
 from pathlib import Path
+
+from PIL import Image
+
+from app.tasks.celery import celery
+
 
 @celery.task
 def procces_pic(path:str):
