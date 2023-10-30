@@ -16,3 +16,11 @@ _redis_
 _Сортировака импортов_
 
 - isort app/main.py
+
+_Sentry - трекинг ошибок_
+
+_DOCKER_
+
+- pip freeze > requirements.txt
+- docker build .
+- docker run -p 9000:8000 HASH_ID

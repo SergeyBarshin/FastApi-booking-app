@@ -6,6 +6,7 @@ from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from sqladmin import Admin
 import sentry_sdk
+from fastapi_versioning import VersionedFastAPI
 
 from app.admin.auth import authentication_backend
 from app.admin.views import BookingsAdmin, UserAdmin
@@ -55,6 +56,7 @@ async def startup():
         decode_responses=True)
     FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
 
+app = VersionedFastAPI(app, version_format='{major}', prefix_format='/v{major}',)
 
 admin = Admin(app, engine, authentication_backend=authentication_backend)
 
@@ -70,3 +72,4 @@ async def add_process_time_header(request: Request, call_next):
     process_time = time.time() - start_time
     logger.info("Request handling time", extra={"process_time": round(process_time, 4)})
     return response
+

@@ -1,6 +1,7 @@
 from datetime import date
 
 from fastapi import APIRouter, Depends
+from fastapi_versioning import version
 
 from app.bookings.dao import BookingDAO
 from app.bookings.schemas import SBooking
@@ -15,6 +16,7 @@ router = APIRouter(
 
 
 @router.get("")
+@version(1)
 async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking]:
     booking_dao = BookingDAO()
     result = await booking_dao.get_bookings_by_user_id(user_id=user.id)
@@ -22,6 +24,7 @@ async def get_bookings(user: Users = Depends(get_current_user)) -> list[SBooking
 
 
 @router.delete("/{id}")
+@version(1)
 async def delete_bookings(id: int, user: Users = Depends(get_current_user)):
     booking_dao = BookingDAO()
     books = await booking_dao.find_one_or_none(id=id)
